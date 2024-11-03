@@ -1,18 +1,30 @@
-# Exported from Render on 2024-10-27T17:21:55Z
+# Exported from Render on 2024-10-27T23:15:52Z
 services:
-- type: web
-  name: Flowise
-  runtime: docker
-  repo: https://github.com/jgoldfed/Flowise
-  plan: free
-  envVars:
-  - key: NODE_VERSION
-    sync: false
-  - key: FLOWISE_PASSWORD
-    sync: false
-  - key: FLOWISE_USERNAME
-    sync: false
-  region: virginia
-  dockerContext: .
-  dockerfilePath: ./Dockerfile
+  - type: web
+    name: Flowise
+    runtime: docker
+    repo: https://github.com/jgoldfed/Flowise
+    plan: starter
+    envVars:
+      - key: SECRETKEY_PATH
+        sync: false
+      - key: LOG_PATH
+        sync: false
+      - key: API_KEY_PATH
+        sync: false
+      - key: DATABASE_PATH
+        sync: false
+      - key: NODE_VERSION
+        sync: false
+      - key: FLOWISE_PASSWORD
+        sync: false
+      - key: FLOWISE_USERNAME
+        sync: false
+    region: virginia
+    dockerContext: .
+    dockerfilePath: ./Dockerfile
+    disk:
+      name: disk
+      mountPath: /opt/render/.flowise
+      sizeGB: 1
 version: "1"
