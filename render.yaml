@@ -16,6 +16,8 @@ services:
         sync: false
       - key: NODE_VERSION
         sync: false
+      - key: BLOB_STORAGE_PATH
+        sync: false
       - key: FLOWISE_PASSWORD
         sync: false
       - key: FLOWISE_USERNAME
