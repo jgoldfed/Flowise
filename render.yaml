@@ -6,21 +6,21 @@ services:
     repo: https://github.com/jgoldfed/Flowise
     plan: starter
     envVars:
-      - key: SECRETKEY_PATH
-        sync: false
-      - key: LOG_PATH
-        sync: false
-      - key: API_KEY_PATH
-        sync: false
-      - key: DATABASE_PATH
-        sync: false
-      - key: NODE_VERSION
-        sync: false
-      - key: BLOB_STORAGE_PATH
-        sync: false
       - key: FLOWISE_PASSWORD
         sync: false
       - key: FLOWISE_USERNAME
+        sync: false
+      - key: NODE_VERSION
+        sync: false
+      - key: DATABASE_PATH
+        sync: false
+      - key: API_KEY_PATH
+        sync: false
+      - key: LOG_PATH
+        sync: false
+      - key: SECRETKEY_PATH
+        sync: false
+      - key: BLOB_STORAGE_PATH
         sync: false
     region: virginia
     dockerContext: .
