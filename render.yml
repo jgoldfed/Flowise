@@ -1,0 +1,18 @@
+# Exported from Render on 2024-10-27T17:21:55Z
+services:
+- type: web
+  name: Flowise
+  runtime: docker
+  repo: https://github.com/jgoldfed/Flowise
+  plan: free
+  envVars:
+  - key: NODE_VERSION
+    sync: false
+  - key: FLOWISE_PASSWORD
+    sync: false
+  - key: FLOWISE_USERNAME
+    sync: false
+  region: virginia
+  dockerContext: .
+  dockerfilePath: ./Dockerfile
+version: "1"
