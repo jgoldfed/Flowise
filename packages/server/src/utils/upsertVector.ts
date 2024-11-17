@@ -12,7 +12,8 @@ import {
     getMemorySessionId,
     getAppVersion,
     getTelemetryFlowObj,
-    getStartingNodes
+    getStartingNodes,
+    getAPIOverrideConfig
 } from '../utils'
 import { validateChatflowAPIKey } from './validateKey'
 import { IncomingInput, INodeDirectedGraph, IReactFlowObject, ChatType } from '../Interface'
@@ -56,7 +57,8 @@ export const upsertVector = async (req: Request, isInternal: boolean = false) =>
             for (const file of files) {
                 const fileNames: string[] = []
                 const fileBuffer = fs.readFileSync(file.path)
-
+                // Address file name with special characters: https://github.com/expressjs/multer/issues/1104
+                file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')
                 const storagePath = await addArrayFilesToStorage(file.mimetype, fileBuffer, file.originalname, fileNames, chatflowid)
 
                 const fileInputFieldFromMimeType = mapMimeTypeToInputField(file.mimetype)
@@ -154,21 +156,27 @@ export const upsertVector = async (req: Request, isInternal: boolean = false) =>
 
         const { startingNodeIds, depthQueue } = getStartingNodes(filteredGraph, stopNodeId)
 
+        /*** Get API Config ***/
+        const { nodeOverrides, variableOverrides, apiOverrideStatus } = getAPIOverrideConfig(chatflow)
+
         const upsertedResult = await buildFlow({
             startingNodeIds,
             reactFlowNodes: nodes,
             reactFlowEdges: edges,
+            apiMessageId,
             graph: filteredGraph,
             depthQueue,
             componentNodes: appServer.nodesPool.componentNodes,
             question: incomingInput.question,
             chatHistory,
             chatId,
-            apiMessageId,
             sessionId: sessionId ?? '',
             chatflowid,
             appDataSource: appServer.AppDataSource,
             overrideConfig: incomingInput?.overrideConfig,
+            apiOverrideStatus,
+            nodeOverrides,
+            variableOverrides,
             cachePool: appServer.cachePool,
             isUpsert,
             stopNodeId
